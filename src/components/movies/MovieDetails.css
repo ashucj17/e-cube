@@ -1,0 +1,81 @@
+.movie-details-container {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px 0;
+  }
+  
+  .movie-details-header {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .movie-details-poster {
+    flex: 0 0 300px;
+    margin-right: 30px;
+  }
+  
+  .movie-details-poster img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+  
+  .movie-details-info {
+    flex: 1;
+    padding: 20px;
+    min-width: 300px;
+  }
+  
+  .movie-details-info .movie-title {
+    font-size: 28px;
+    margin-bottom: 15px;
+  }
+  
+  .movie-details-info .movie-meta {
+    display: flex;
+    margin-bottom: 20px;
+  }
+  
+  .movie-details-info .movie-rating,
+  .movie-details-info .movie-language,
+  .movie-details-info .movie-type {
+    margin-right: 15px;
+    padding: 5px 10px;
+    background: #f5f5f5;
+    border-radius: 4px;
+    font-size: 14px;
+  }
+  
+  .movie-details-info .movie-rating {
+    background: #e91e63;
+    color: white;
+  }
+  
+  .movie-description {
+    margin-bottom: 20px;
+    line-height: 1.6;
+  }
+  
+  .movie-details p {
+    margin-bottom: 10px;
+  }
+  
+  .book-btn {
+    margin-top: 20px;
+    padding: 12px 30px;
+    font-size: 16px;
+  }
+  
+  @media (max-width: 768px) {
+    .movie-details-header {
+      flex-direction: column;
+    }
+    
+    .movie-details-poster {
+      margin-right: 0;
+      margin-bottom: 20px;
+      max-width: 100%;
+    }
+  }
