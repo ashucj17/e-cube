@@ -1,15 +1,13 @@
 import { createStore, applyMiddleware, combineReducers } from 'redux';
-import { thunk } from 'redux-thunk'; // Correct import using named export
+import { thunk } from 'redux-thunk';
 import movieReducer from '../reducers/movieReducer';
-// Import other reducers as needed
+import eventReducer from '../reducers/eventReducer';
 
-// Combine all reducers
 const rootReducer = combineReducers({
   movies: movieReducer,
-  // Add other reducers here
+  events: eventReducer,
 });
 
-// Create the store with middleware
 const configureStore = () => {
   return createStore(
     rootReducer,
