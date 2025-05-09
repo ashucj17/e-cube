@@ -1,22 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom/client'; // Note the '/client' import for React 18
-import { BrowserRouter } from 'react-router-dom';
+import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
-import configureStore from './store/configureStore';
+import { BrowserRouter as Router } from 'react-router-dom';
 import App from './App';
-import './index.css';
+import store from './store';
+import './assets/styles/tailwind.css';
 
-// Create the Redux store
-const store = configureStore();
-
-// React 18 way of rendering
-const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-  <React.StrictMode>
-    <Provider store={store}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
-    </Provider>
-  </React.StrictMode>
+ReactDOM.render(
+  <Provider store={store}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>,
+  document.getElementById('root')
 );

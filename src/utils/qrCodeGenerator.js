@@ -7,10 +7,9 @@ import QRCode from 'qrcode';
  */
 export const generateQRCode = async (bookingDetails) => {
   try {
-    // Convert booking details to JSON string
+ 
     const bookingString = JSON.stringify(bookingDetails);
-    
-    // Generate QR code as data URL
+
     const qrCodeDataURL = await QRCode.toDataURL(bookingString, {
       width: 250,
       margin: 2,
@@ -28,9 +27,8 @@ export const generateQRCode = async (bookingDetails) => {
 };
 
 /**
- * Generates a QR code and renders it to a canvas element
- * @param {string} canvasId - The ID of the canvas element to render to
- * @param {Object} bookingDetails - The ticket booking details to encode
+ * @param {string} canvasId
+ * @param {Object} bookingDetails
  * @returns {Promise<void>}
  */
 export const renderQRCodeToCanvas = async (canvasId, bookingDetails) => {
@@ -40,10 +38,9 @@ export const renderQRCodeToCanvas = async (canvasId, bookingDetails) => {
       throw new Error(`Canvas element with ID "${canvasId}" not found`);
     }
     
-    // Convert booking details to JSON string
+
     const bookingString = JSON.stringify(bookingDetails);
-    
-    // Render QR code to canvas
+
     await QRCode.toCanvas(canvas, bookingString, {
       width: 250,
       margin: 2,
@@ -58,7 +55,6 @@ export const renderQRCodeToCanvas = async (canvasId, bookingDetails) => {
   }
 };
 
-// Create a named export object to avoid ESLint warning
 const qrCodeUtils = {
   generateQRCode,
   renderQRCodeToCanvas
