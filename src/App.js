@@ -1,30 +1,26 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
-import Header from './components/common/Header';
-import Footer from './components/common/Footer';
-import LatestMovies from './components/movies/LatestMovies';
-import UpcomingMovies from './components/movies/UpcomingMovies';
-import MovieDetails from './components/movies/MovieDetails';
-import TicketBooking from './components/booking/TicketBooking';
-import FinalTicket from './components/booking/FinalTicket';
-import Events from './components/events/Events';
-import NotFound from './components/common/NotFound';
-import './App.css';
+import Header from './components/Header';
+import Footer from './components/Footer';
+import HomePage from './pages/HomePage';
+import MovieDetailPage from './pages/MovieDetailPage';
+import BookingPage from './pages/BookingPage';
+import TicketPage from './pages/TicketPage';
+import UpcomingMoviesPage from './pages/UpcomingMoviesPage';
+import EventsPage from './pages/EventsPage';
 
 function App() {
   return (
-    <div className="app">
+    <div className="flex flex-col min-h-screen">
       <Header />
-      <main className="main-content">
+      <main className="flex-grow container mx-auto px-4 py-8">
         <Routes>
-          <Route path="/" element={<LatestMovies />} />
-          <Route path="/latest" element={<LatestMovies />} />
-          <Route path="/upcoming" element={<UpcomingMovies />} />
-          <Route path="/movie/:id" element={<MovieDetails />} />
-          <Route path="/booking/:id" element={<TicketBooking />} />
-          <Route path="/ticket" element={<FinalTicket />} />
-          <Route path="/events" element={<Events />} />
-          <Route path="*" element={<NotFound />} />
+          <Route path="/" element={<HomePage />} />
+          <Route path="/movie/:id" element={<MovieDetailPage />} />
+          <Route path="/booking/:id" element={<BookingPage />} />
+          <Route path="/ticket" element={<TicketPage />} />
+          <Route path="/upcoming" element={<UpcomingMoviesPage />} />
+          <Route path="/events" element={<EventsPage />} />
         </Routes>
       </main>
       <Footer />
