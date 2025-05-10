@@ -1,27 +1,42 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getUpcomingMovies } from '../redux/actions/movieActions';
+import { fetchUpcomingMovies } from '../redux/actions/movieActions';
 import UpcomingMovieCard from '../components/UpcomingMovieCard';
 import Header from '../components/Header';
 import Footer from '../components/Footer';
 
 const UpcomingMoviesPage = () => {
   const dispatch = useDispatch();
-  const { upcomingMovies, loading, error } = useSelector(state => state.movies);
+  
+  // Get the full movies state and log it for debugging
+  const moviesState = useSelector(state => state.movies);
+  console.log('Movies State:', moviesState);
+  
+  // Extract with safety checks
+  const upcomingMovies = moviesState?.upcomingItems || moviesState?.upcomingMovies || [];
+  const loading = moviesState?.loading || false;
+  const error = moviesState?.error || null;
+  
   const [selectedGenre, setSelectedGenre] = useState('all');
 
   useEffect(() => {
-    dispatch(getUpcomingMovies());
+    dispatch(fetchUpcomingMovies());
   }, [dispatch]);
 
-  // Filter movies by genre
+  // Add safety check before filtering
   const filteredMovies = selectedGenre === 'all'
     ? upcomingMovies
-    : upcomingMovies.filter(movie => movie.genres.includes(selectedGenre));
+    : Array.isArray(upcomingMovies) 
+      ? upcomingMovies.filter(movie => 
+          Array.isArray(movie.genres) && movie.genres.includes(selectedGenre)
+        )
+      : [];
 
-  // Get unique genres from all movies
-  const allGenres = upcomingMovies 
-    ? [...new Set(upcomingMovies.flatMap(movie => movie.genres))]
+  // Get unique genres with safety check
+  const allGenres = Array.isArray(upcomingMovies) 
+    ? [...new Set(upcomingMovies.flatMap(movie => 
+        Array.isArray(movie.genres) ? movie.genres : []
+      ))]
     : [];
 
   if (loading) {
@@ -45,7 +60,7 @@ const UpcomingMoviesPage = () => {
             <p className="text-xl font-bold">Oops! Something went wrong.</p>
             <p>{error}</p>
             <button 
-              onClick={() => dispatch(getUpcomingMovies())}
+              onClick={() => dispatch(fetchUpcomingMovies())}
               className="mt-4 bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded"
             >
               Try Again
@@ -90,16 +105,16 @@ const UpcomingMoviesPage = () => {
         </div>
         
         {/* Movies Grid */}
-        {filteredMovies && filteredMovies.length > 0 ? (
+        {Array.isArray(filteredMovies) && filteredMovies.length > 0 ? (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {filteredMovies.map(movie => (
-              <UpcomingMovieCard key={movie.id} movie={movie} />
+              <UpcomingMovieCard key={movie.id || Math.random()} movie={movie} />
             ))}
           </div>
         ) : (
           <div className="text-center py-16">
             <p className="text-xl text-gray-500">
-              {upcomingMovies && upcomingMovies.length > 0
+              {Array.isArray(upcomingMovies) && upcomingMovies.length > 0
                 ? 'No movies match the selected genre.'
                 : 'No upcoming movies available at this time.'}
             </p>

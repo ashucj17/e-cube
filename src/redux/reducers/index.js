@@ -1,10 +1,12 @@
 import { combineReducers } from 'redux';
 import movieReducer from './movieReducer';
-import eventReducer from './eventReducer';
 import bookingReducer from './bookingReducer';
+import eventReducer from './eventReducer';
 
-export default combineReducers({
+const rootReducer = combineReducers({
   movies: movieReducer,
-  events: eventReducer,
-  booking: bookingReducer
+  bookings: bookingReducer,
+  events: eventReducer
 });
+
+export default rootReducer;

@@ -1,19 +1,34 @@
 import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { getLatestMovies, getUpcomingMovies } from '../redux/actions/movieActions';
-import { getEvents } from '../redux/actions/eventActions';
+import { fetchMovies, fetchUpcomingMovies } from '../redux/actions/movieActions';
+import { fetchEvents } from '../redux/actions/eventActions';
 import MovieCard from '../components/MovieCard';
 import EventCard from '../components/EventCard';
 
 const HomePage = () => {
   const dispatch = useDispatch();
-  const { latestMovies, loading: moviesLoading } = useSelector(state => state.movies);
-  const { events, loading: eventsLoading } = useSelector(state => state.events);
+  
+  // Get the full state to debug
+  const moviesState = useSelector(state => state.movies);
+  const eventsState = useSelector(state => state.events);
+  
+  // Add safety checks and fallbacks
+  const latestMovies = moviesState?.items || moviesState?.latestMovies || []; // Try both possible property names
+  const moviesLoading = moviesState?.loading || false;
+  const events = eventsState?.items || eventsState?.events || []; // Try both possible property names
+  const eventsLoading = eventsState?.loading || false;
+  
+  // Log the state to debug
+  console.log('Movies State:', moviesState);
+  console.log('Events State:', eventsState);
+  console.log('Latest Movies:', latestMovies);
+  console.log('Events:', events);
   
   useEffect(() => {
-    dispatch(getLatestMovies());
-    dispatch(getUpcomingMovies());
-    dispatch(getEvents());
+    // Dispatch our actions to load data
+    dispatch(fetchMovies());
+    dispatch(fetchUpcomingMovies());
+    dispatch(fetchEvents());
   }, [dispatch]);
   
   return (
@@ -30,9 +45,14 @@ const HomePage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-            {latestMovies.slice(0, 4).map(movie => (
-              <MovieCard key={movie._id || movie.id} movie={movie} />
-            ))}
+            {/* Add a check before using slice */}
+            {Array.isArray(latestMovies) && latestMovies.length > 0 ? 
+              latestMovies.slice(0, 4).map(movie => (
+                <MovieCard key={movie._id || movie.id || Math.random()} movie={movie} />
+              ))
+            : 
+              <div className="col-span-4 text-center text-gray-500">No movies available</div>
+            }
           </div>
         )}
       </section>
@@ -49,9 +69,14 @@ const HomePage = () => {
           </div>
         ) : (
           <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-            {events.slice(0, 3).map(event => (
-              <EventCard key={event._id || event.id} event={event} />
-            ))}
+            {/* Add a check before using slice */}
+            {Array.isArray(events) && events.length > 0 ? 
+              events.slice(0, 3).map(event => (
+                <EventCard key={event._id || event.id || Math.random()} event={event} />
+              ))
+            : 
+              <div className="col-span-3 text-center text-gray-500">No events available</div>
+            }
           </div>
         )}
       </section>

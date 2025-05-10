@@ -1,48 +1,59 @@
 import {
-    GET_LATEST_MOVIES,
-    GET_MOVIE_DETAILS,
-    GET_UPCOMING_MOVIES,
-    MOVIE_ERROR
-  } from '../types';
-  
-  const initialState = {
-    latestMovies: [],
-    currentMovie: null,
-    upcomingMovies: [],
-    loading: true,
-    error: {}
-  };
-  
-  export default function movieReducer(state = initialState, action) {
-    const { type, payload } = action;
-  
-    switch (type) {
-      case GET_LATEST_MOVIES:
-        return {
-          ...state,
-          latestMovies: payload,
-          loading: false
-        };
-      case GET_MOVIE_DETAILS:
-        return {
-          ...state,
-          currentMovie: payload,
-          loading: false
-        };
-      case GET_UPCOMING_MOVIES:
-        return {
-          ...state,
-          upcomingMovies: payload,
-          loading: false
-        };
-      case MOVIE_ERROR:
-        return {
-          ...state,
-          error: payload,
-          loading: false
-        };
-      default:
-        return state;
-    }
+  FETCH_MOVIES_REQUEST,
+  FETCH_MOVIES_SUCCESS,
+  FETCH_MOVIES_FAILURE,
+  GET_MOVIE_DETAILS,
+  FETCH_UPCOMING_MOVIES_SUCCESS
+} from '../types';
+
+const initialState = {
+  movies: [],
+  upcomingMovies: [],
+  selectedMovie: null,
+  loading: false,
+  error: null
+};
+
+const movieReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case FETCH_MOVIES_REQUEST:
+      return {
+        ...state,
+        loading: true,
+        error: null
+      };
+    
+    case FETCH_MOVIES_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        movies: action.payload
+      };
+    
+    case FETCH_UPCOMING_MOVIES_SUCCESS:
+      return {
+        ...state,
+        loading: false,
+        upcomingMovies: action.payload
+      };
+    
+    case FETCH_MOVIES_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    
+    case GET_MOVIE_DETAILS:
+      return {
+        ...state,
+        selectedMovie: action.payload,
+        loading: false
+      };
+    
+    default:
+      return state;
   }
-  
+};
+
+export default movieReducer;

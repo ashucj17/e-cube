@@ -1,28 +1,50 @@
-import { GET_EVENTS, EVENT_ERROR } from '../types';
+import {
+  FETCH_EVENTS_REQUEST,
+  FETCH_EVENTS_SUCCESS,
+  FETCH_EVENTS_FAILURE,
+  GET_EVENT_DETAILS
+} from '../types';
 
 const initialState = {
   events: [],
-  loading: true,
-  error: {}
+  selectedEvent: null,
+  loading: false,
+  error: null
 };
 
-export default function eventReducer(state = initialState, action) {
-  const { type, payload } = action;
-
-  switch (type) {
-    case GET_EVENTS:
+const eventReducer = (state = initialState, action) => {
+  switch (action.type) {
+    case FETCH_EVENTS_REQUEST:
       return {
         ...state,
-        events: payload,
-        loading: false
+        loading: true,
+        error: null
       };
-    case EVENT_ERROR:
+    
+    case FETCH_EVENTS_SUCCESS:
       return {
         ...state,
-        error: payload,
+        loading: false,
+        events: action.payload
+      };
+    
+    case FETCH_EVENTS_FAILURE:
+      return {
+        ...state,
+        loading: false,
+        error: action.payload
+      };
+    
+    case GET_EVENT_DETAILS:
+      return {
+        ...state,
+        selectedEvent: action.payload,
         loading: false
       };
+    
     default:
       return state;
   }
-}
+};
+
+export default eventReducer;

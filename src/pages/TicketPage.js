@@ -1,13 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useSelector } from 'react-redux';
 import QRCodeTicket from '../components/QRCodeTicket';
 
 const TicketPage = () => {
-  const [ticketType] = useState('digital');
   const { booking } = useSelector(state => state.bookings);
   
   useEffect(() => {
-    // Scroll to top when component mounts
+    
     window.scrollTo(0, 0);
   }, []);
 

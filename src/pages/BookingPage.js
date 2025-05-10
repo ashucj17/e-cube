@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import SeatSelection from '../components/SeatSelection';
@@ -21,12 +21,12 @@ const BookingPage = () => {
     senior: 0
   });
   
-  // Define ticket prices
-  const ticketPrices = {
+  // Define ticket prices using useMemo to avoid re-creation on every render
+  const ticketPrices = useMemo(() => ({
     adult: 12.99,
     child: 8.99,
     senior: 10.99
-  };
+  }), []);
   
   // Calculate total price
   const calculateTotal = () => {
