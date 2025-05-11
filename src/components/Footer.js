@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="container">
         <div className="row">
           <div className="col-md-4 mb-4 mb-md-0">
-            <h5 className="fw-bold mb-3">CinemaPlus</h5>
+            <h5 className="fw-bold mb-3">E-Cube</h5>
             <p className="text-muted">
               Your premier destination for movies, events, and unforgettable entertainment experiences.
             </p>
