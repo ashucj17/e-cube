@@ -23,14 +23,13 @@ import ProfilePage from './pages/ProfilePage';
 import NotFoundPage from './pages/NotFoundPage';
 import ConfirmationPage from './pages/ConfirmationPage';
 
-// Import Actions
 import { checkAuthStatus } from './redux/actions/authActions';
 
 function App() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // Check if user is logged in on app load
+
     dispatch(checkAuthStatus());
   }, [dispatch]);
 
