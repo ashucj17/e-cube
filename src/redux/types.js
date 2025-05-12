@@ -1,10 +1,4 @@
-// User actions
-export const LOGIN_REQUEST = 'LOGIN_REQUEST';
-export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
-export const LOGIN_FAILURE = 'LOGIN_FAILURE';
-export const LOGOUT = 'LOGOUT';
-
-// Movie actions
+// Movie Action Types
 export const FETCH_MOVIES_REQUEST = 'FETCH_MOVIES_REQUEST';
 export const FETCH_MOVIES_SUCCESS = 'FETCH_MOVIES_SUCCESS';
 export const FETCH_MOVIES_FAILURE = 'FETCH_MOVIES_FAILURE';
@@ -20,14 +14,20 @@ export const FETCH_UPCOMING_MOVIES_FAILURE = 'FETCH_UPCOMING_MOVIES_FAILURE';
 export const SELECT_MOVIE = 'SELECT_MOVIE';
 export const GET_MOVIE_DETAILS = 'GET_MOVIE_DETAILS';
 
-// Event actions
+// Event Action Types
 export const FETCH_EVENTS_REQUEST = 'FETCH_EVENTS_REQUEST';
 export const FETCH_EVENTS_SUCCESS = 'FETCH_EVENTS_SUCCESS';
 export const FETCH_EVENTS_FAILURE = 'FETCH_EVENTS_FAILURE';
 export const GET_EVENT_DETAILS = 'GET_EVENT_DETAILS';
 
-// Booking actions
-export const SELECT_SEATS = 'SELECT_SEATS';
+// Booking Action Types
 export const SET_TICKET_TYPE = 'SET_TICKET_TYPE';
+export const SELECT_SEATS = 'SELECT_SEATS';
 export const COMPLETE_BOOKING = 'COMPLETE_BOOKING';
 export const RESET_BOOKING = 'RESET_BOOKING';
+
+// Auth Action Types
+export const LOGIN_REQUEST = 'LOGIN_REQUEST';
+export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
+export const LOGIN_FAILURE = 'LOGIN_FAILURE';
+export const LOGOUT = 'LOGOUT';

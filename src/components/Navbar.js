@@ -1,12 +1,22 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
+import { createSelector } from 'reselect';
 import { LOGOUT } from '../redux/types';
+
+// Memoized selector
+const selectAuthState = createSelector(
+  (state) => state.auth,
+  (auth) => ({
+    isAuthenticated: auth ? auth.isAuthenticated : false,
+    user: auth ? auth.user : null
+  })
+);
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { isAuthenticated, user } = useSelector((state) => state.auth || { isAuthenticated: false, user: null });
+  const { isAuthenticated, user } = useSelector(selectAuthState);
 
   const handleLogout = () => {
     dispatch({ type: LOGOUT });
@@ -27,13 +37,13 @@ const Navbar = () => {
             </li>
             <li className="nav-item dropdown">
               <button
-  className="nav-link dropdown-toggle btn btn-link"
-  id="moviesDropdown"
-  data-bs-toggle="dropdown"
-  aria-expanded="false"
->
-  Movies
-</button>
+                className="nav-link dropdown-toggle btn btn-link"
+                id="moviesDropdown"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Movies
+              </button>
               <ul className="dropdown-menu" aria-labelledby="moviesDropdown">
                 <li><Link className="dropdown-item" to="/movies">All Movies</Link></li>
                 <li><Link className="dropdown-item" to="/latest-movies">Latest Movies</Link></li>
