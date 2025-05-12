@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUpcomingMovies } from '../redux/actions/movieActions';
+import { fetchLatestMovies } from '../redux/actions/movieActions';
 import MovieCard from '../components/MovieCard';
 import { Link } from 'react-router-dom';
 
-const UpcomingMoviesPage = () => {
+const LatestMoviesPage = () => {
   const dispatch = useDispatch();
-  const { loading, upcomingMovies, error } = useSelector((state) => state.movies);
+  const { loading, latestMovies, error } = useSelector((state) => state.movies);
 
   useEffect(() => {
-    dispatch(fetchUpcomingMovies());
+    dispatch(fetchLatestMovies());
   }, [dispatch]);
 
   if (loading) {
@@ -22,11 +22,10 @@ const UpcomingMoviesPage = () => {
 
   return (
     <div className="container py-4">
-      <h2 className="mb-4">Upcoming Movies</h2>
-      
-      {upcomingMovies && upcomingMovies.length > 0 ? (
+      <h2 className="mb-4">Latest Movies</h2>
+      {latestMovies && latestMovies.length > 0 ? (
         <div className="row row-cols-1 row-cols-md-3 row-cols-lg-4 g-4">
-          {upcomingMovies.map((movie) => (
+          {latestMovies.map((movie) => (
             <div className="col" key={movie.id}>
               <Link to={`/movie/${movie.id}`} className="text-decoration-none">
                 <MovieCard movie={movie} />
@@ -35,10 +34,10 @@ const UpcomingMoviesPage = () => {
           ))}
         </div>
       ) : (
-        <p>No upcoming movies available.</p>
+        <p>No latest movies available.</p>
       )}
     </div>
   );
 };
 
-export default UpcomingMoviesPage;
+export default LatestMoviesPage;

@@ -1,25 +1,35 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetchUpcomingMovies } from '../redux/actions/movieActions';
+import MovieList from '../components/MovieList';
+import LoadingSpinner from '../components/LoadingSpinner';
+import ErrorMessage from '../components/ErrorMessage';
 
-const UpcomingMovieCard = ({ movie }) => {
+// Don't include Header or Footer components here since they should be in App.js layout
+
+const UpcomingMoviesPage = () => {
+  const dispatch = useDispatch();
+  const { upcomingMovies, loading, error } = useSelector(state => state.movies);
+  
+  useEffect(() => {
+    dispatch(fetchUpcomingMovies());
+  }, [dispatch]);
+  
+  console.log('Movies State:', useSelector(state => state.movies));
+  
+  if (loading) return <LoadingSpinner />;
+  if (error) return <ErrorMessage message={error} />;
+  
   return (
-    <div className="bg-white rounded-lg shadow-md overflow-hidden">
-      <img 
-        src={movie.image ? `https://image-path/${movie.image}` : '/placeholder.jpg'} 
-        alt={movie.title}
-        className="w-full h-64 object-cover"
-      />
-      <div className="p-4">
-        <h3 className="text-lg font-semibold mb-2">{movie.title}</h3>
-        <p className="text-sm text-gray-600 mb-1">{movie.genre}</p>
-        <p className="text-sm text-gray-600 mb-2">Release: {movie.releaseDate}</p>
-        <button 
-          className="inline-block bg-gray-200 text-gray-800 px-4 py-2 rounded hover:bg-gray-300 transition"
-        >
-          Notify Me
-        </button>
-      </div>
+    <div className="upcoming-movies-page">
+      <h1>Upcoming Movies</h1>
+      {upcomingMovies && upcomingMovies.length > 0 ? (
+        <MovieList movies={upcomingMovies} />
+      ) : (
+        <p>No upcoming movies found.</p>
+      )}
     </div>
   );
 };
 
-export default UpcomingMovieCard;
+export default UpcomingMoviesPage;

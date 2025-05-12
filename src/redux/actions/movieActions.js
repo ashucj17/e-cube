@@ -1,168 +1,117 @@
+import axios from 'axios';
 import {
   FETCH_MOVIES_REQUEST,
   FETCH_MOVIES_SUCCESS,
   FETCH_MOVIES_FAILURE,
-  GET_MOVIE_DETAILS,
-  FETCH_UPCOMING_MOVIES_SUCCESS
+  FETCH_LATEST_MOVIES_REQUEST,
+  FETCH_LATEST_MOVIES_SUCCESS,
+  FETCH_LATEST_MOVIES_FAILURE,
+  FETCH_UPCOMING_MOVIES_REQUEST,
+  FETCH_UPCOMING_MOVIES_SUCCESS,
+  FETCH_UPCOMING_MOVIES_FAILURE,
+  SELECT_MOVIE,
+  GET_MOVIE_DETAILS
 } from '../types';
 
-// Sample movie data for demonstration
-const demoMovies = [
-  {
-    id: '1',
-    title: 'Inception',
-    director: 'Christopher Nolan',
-    cast: ['Leonardo DiCaprio', 'Joseph Gordon-Levitt', 'Ellen Page'],
-    genre: ['Sci-Fi', 'Action'],
-    description: 'A thief who steals corporate secrets through the use of dream-sharing technology is given the inverse task of planting an idea into the mind of a C.E.O.',
-    runtime: 148,
-    rating: 'PG-13',
-    releaseDate: '2010-07-16',
-    posterUrl: '/api/placeholder/300/450'
-  },
-  {
-    id: '2',
-    title: 'The Shawshank Redemption',
-    director: 'Frank Darabont',
-    cast: ['Tim Robbins', 'Morgan Freeman', 'Bob Gunton'],
-    genre: ['Drama'],
-    description: 'Two imprisoned men bond over a number of years, finding solace and eventual redemption through acts of common decency.',
-    runtime: 142,
-    rating: 'R',
-    releaseDate: '1994-10-14',
-    posterUrl: '/api/placeholder/300/450'
-  },
-  {
-    id: '3',
-    title: 'The Dark Knight',
-    director: 'Christopher Nolan',
-    cast: ['Christian Bale', 'Heath Ledger', 'Aaron Eckhart'],
-    genre: ['Action', 'Crime', 'Drama'],
-    description: 'When the menace known as the Joker wreaks havoc and chaos on the people of Gotham, Batman must accept one of the greatest psychological and physical tests of his ability to fight injustice.',
-    runtime: 152,
-    rating: 'PG-13',
-    releaseDate: '2008-07-18',
-    posterUrl: '/api/placeholder/300/450'
-  }
-];
+const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
+const BASE_URL = 'https://api.themoviedb.org/3';
 
-const upcomingMoviesDemoData = [
-  {
-    id: '4',
-    title: 'Dune: Part Two',
-    director: 'Denis Villeneuve',
-    cast: ['Timothée Chalamet', 'Zendaya', 'Rebecca Ferguson'],
-    genre: ['Sci-Fi', 'Adventure'],
-    description: 'The saga continues as Paul Atreides unites with the Fremen people of Arrakis to wage war against House Harkonnen.',
-    runtime: 165,
-    rating: 'PG-13',
-    releaseDate: '2025-08-15',
-    posterUrl: '/api/placeholder/300/450'
-  },
-  {
-    id: '5',
-    title: 'Avatar 3',
-    director: 'James Cameron',
-    cast: ['Sam Worthington', 'Zoe Saldana', 'Sigourney Weaver'],
-    genre: ['Action', 'Adventure', 'Fantasy'],
-    description: 'Jake Sully and Neytiri continue their journey across the world of Pandora in this next installment.',
-    runtime: 180,
-    rating: 'PG-13',
-    releaseDate: '2025-12-20',
-    posterUrl: '/api/placeholder/300/450'
-  }
-];
-
-// Action Creators
-export const fetchMoviesRequest = () => {
-  return {
-    type: FETCH_MOVIES_REQUEST
-  };
-};
-
-export const fetchMoviesSuccess = (movies) => {
-  return {
-    type: FETCH_MOVIES_SUCCESS,
-    payload: movies
-  };
-};
-
-export const fetchMoviesFailure = (error) => {
-  return {
-    type: FETCH_MOVIES_FAILURE,
-    payload: error
-  };
-};
-
-export const getMovieDetailsSuccess = (movie) => {
-  return {
-    type: GET_MOVIE_DETAILS,
-    payload: movie
-  };
-};
-
-export const fetchUpcomingMoviesSuccess = (movies) => {
-  return {
-    type: FETCH_UPCOMING_MOVIES_SUCCESS,
-    payload: movies
-  };
-};
-
-// Thunk action creators
+// Action for fetching general movies
 export const fetchMovies = () => {
-  return (dispatch) => {
-    dispatch(fetchMoviesRequest());
+  return async (dispatch) => {
+    dispatch({ type: FETCH_MOVIES_REQUEST });
     
-    // In a real app, this would be an API call
-    // For demo, we're using our example data
     try {
-      // Simulate API delay
-      setTimeout(() => {
-        dispatch(fetchMoviesSuccess(demoMovies));
-      }, 500);
-    } catch (error) {
-      dispatch(fetchMoviesFailure(error.message));
-    }
-  };
-};
-
-export const getMovieDetails = (movieId) => {
-  return (dispatch) => {
-    dispatch(fetchMoviesRequest());
-    
-    // In a real app, this would be an API call for a specific movie
-    try {
-      // Find the movie in our demo data
-      const movie = [...demoMovies, ...upcomingMoviesDemoData].find(
-        movie => movie.id === movieId
+      const response = await axios.get(
+        `${BASE_URL}/movie/popular?api_key=${API_KEY}&language=en-US&page=1`
       );
       
-      // Simulate API delay
-      setTimeout(() => {
-        if (movie) {
-          dispatch(getMovieDetailsSuccess(movie));
-        } else {
-          dispatch(fetchMoviesFailure('Movie not found'));
-        }
-      }, 300);
+      dispatch({
+        type: FETCH_MOVIES_SUCCESS,
+        payload: response.data.results,
+      });
     } catch (error) {
-      dispatch(fetchMoviesFailure(error.message));
+      dispatch({
+        type: FETCH_MOVIES_FAILURE,
+        payload: error.message,
+      });
     }
   };
 };
 
-export const fetchUpcomingMovies = () => {
-  return (dispatch) => {
-    dispatch(fetchMoviesRequest());
+// Action for fetching latest movies
+export const fetchLatestMovies = () => {
+  return async (dispatch) => {
+    dispatch({ type: FETCH_LATEST_MOVIES_REQUEST });
     
-    // In a real app, this would be an API call
     try {
-      // Simulate API delay
-      setTimeout(() => {
-        dispatch(fetchUpcomingMoviesSuccess(upcomingMoviesDemoData));
-      }, 500);
+      const response = await axios.get(
+        `${BASE_URL}/movie/now_playing?api_key=${API_KEY}&language=en-US&page=1`
+      );
+      
+      dispatch({
+        type: FETCH_LATEST_MOVIES_SUCCESS,
+        payload: response.data.results,
+      });
     } catch (error) {
-      dispatch(fetchMoviesFailure(error.message));
+      dispatch({
+        type: FETCH_LATEST_MOVIES_FAILURE,
+        payload: error.message,
+      });
+    }
+  };
+};
+
+// Action for fetching upcoming movies
+export const fetchUpcomingMovies = () => {
+  return async (dispatch) => {
+    dispatch({ type: FETCH_UPCOMING_MOVIES_REQUEST });
+    
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/movie/upcoming?api_key=${API_KEY}&language=en-US&page=1`
+      );
+      
+      dispatch({
+        type: FETCH_UPCOMING_MOVIES_SUCCESS,
+        payload: response.data.results,
+      });
+    } catch (error) {
+      dispatch({
+        type: FETCH_UPCOMING_MOVIES_FAILURE,
+        payload: error.message,
+      });
+    }
+  };
+};
+
+// Action for selecting a movie
+export const selectMovie = (movie) => {
+  return {
+    type: SELECT_MOVIE,
+    payload: movie,
+  };
+};
+
+// Action for getting movie details
+export const getMovieDetails = (movieId) => {
+  return async (dispatch) => {
+    dispatch({ type: FETCH_MOVIES_REQUEST });
+    
+    try {
+      const response = await axios.get(
+        `${BASE_URL}/movie/${movieId}?api_key=${API_KEY}&language=en-US&append_to_response=credits,videos`
+      );
+      
+      dispatch({
+        type: GET_MOVIE_DETAILS,
+        payload: response.data,
+      });
+    } catch (error) {
+      dispatch({
+        type: FETCH_MOVIES_FAILURE,
+        payload: error.message,
+      });
     }
   };
 };
