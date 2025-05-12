@@ -8,16 +8,13 @@ const SeatSelection = ({ showtime, pricing }) => {
   const [selectedSeats, setSelectedSeats] = useState([]);
   const [totalPrice, setTotalPrice] = useState(0);
   
-  // Seat statuses: 'available', 'reserved', 'selected'
   const seatRows = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H'];
   const seatsPerRow = 12;
   
-  // Simulate some reserved seats
-  const reservedSeats = showtime?.reservedSeats || ['A3', 'A4', 'D5', 'D6', 'D7', 'G10', 'G11'];
+    const reservedSeats = showtime?.reservedSeats || ['A3', 'A4', 'D5', 'D6', 'D7', 'G10', 'G11'];
 
   useEffect(() => {
-    // Calculate total price when seats change
-    const price = selectedSeats.length * (pricing?.standard || 12);
+     const price = selectedSeats.length * (pricing?.standard || 12);
     setTotalPrice(price);
     
     // Update Redux store

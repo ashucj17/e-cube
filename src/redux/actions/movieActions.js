@@ -14,7 +14,7 @@ import {
 } from '../types';
 
 const API_KEY = process.env.REACT_APP_TMDB_API_KEY;
-const BASE_URL = 'https://api.themoviedb.org/3';
+const BASE_URL = 'http://3.17.216.66:4000/';
 
 // Action for fetching general movies
 export const fetchMovies = () => {

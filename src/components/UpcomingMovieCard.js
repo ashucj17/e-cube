@@ -5,8 +5,6 @@ import MovieList from '../components/MovieList';
 import LoadingSpinner from '../components/LoadingSpinner';
 import ErrorMessage from '../components/ErrorMessage';
 
-// Don't include Header or Footer components here since they should be in App.js layout
-
 const UpcomingMoviesPage = () => {
   const dispatch = useDispatch();
   const { upcomingMovies, loading, error } = useSelector(state => state.movies);
